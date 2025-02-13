@@ -1,27 +1,23 @@
 import { products, setProducts } from "./data.js";
 import { updateTables } from "./ui.js";
 
-// export function addProduct() {
-//     const productName = document.getElementById("productName").value;
-//     const productStock = document.getElementById("productStock").value;
-//     const productPrice = document.getElementById("productPrice").value;
-
-//     const newProduct = {
-//         id: products.length + 1,
-//         name: productName,
-//         stock: parseInt(productStock),
-//         price: parseFloat(productPrice),
-//     };
-
-//     setProducts([...products, newProduct]); // Update data
-//     updateTables(); // Refresh tampilan
-
-//     document.getElementById("addProductForm").reset();
-//     $('#addProductModal').modal('hide');
-// }
-
 export function addProduct() {
-    alert("hello")
+    const productName = document.getElementById("productName").value;
+    const productStock = document.getElementById("productStock").value;
+    const productPrice = document.getElementById("productPrice").value;
+
+    const newProduct = {
+        id: products.length + 1,
+        name: productName,
+        stock: parseInt(productStock),
+        price: parseFloat(productPrice),
+    };
+
+    setProducts([...products, newProduct]); // Update data
+    updateTables(); // Refresh tampilan
+
+    // document.getElementById("addProductModal").reset();
+    // $('#addProductModal').modal('hide');
 }
 
 export function editProduct(id) {
@@ -41,10 +37,10 @@ export function updateProduct() {
     const updatedProducts = products.map(p =>
         p.id == productId ? { ...p, name: productName, stock: parseInt(productStock), price: parseFloat(productPrice) } : p
     );
-
+    console.log(updatedProducts)
     setProducts(updatedProducts);
-    updateTables();
-    $('#editProductModal').modal('hide');
+    // updateTables();
+    // $('#editProductModal').modal('hide');
 }
 
 export function deleteProduct(id) {
