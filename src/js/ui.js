@@ -1,24 +1,26 @@
-import { products, users, orders } from "./data.js";
+import {getProducts,users,orders } from "./data.js";
 
-export function updateTables() {
+export async function updateTables() {
     const productTableBody = document.getElementById("productTableBody");
     const userTableBody = document.getElementById("userTableBody");
     const orderTableBody = document.getElementById("orderTableBody");
 
     productTableBody.innerHTML = "";
+    const products = await getProducts
     products.forEach(product => {
         productTableBody.innerHTML += `
             <tr>
                 <td>${product.id}</td>
-                <td>${product.name}</td>
-                <td>${product.stock}</td>
-                <td>${product.price}</td>
+                <td>${product.nama}</td>
+                <td>${product.kategori}</td>
+                <td>${product.stok}</td>
+                <td>${product.harga}</td>
                 <td>
                     <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editProductModal" onclick="editProduct(${product.id})">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn-action btn-delete" onclick="deleteProduct(${product.id})">
-                        <i class="fas fa-trash-alt"></i>
+                    <button class="btn-action btn-delete">
+                        <i class="fas btn-del fa-trash-alt" id="button-delete"></i>
                     </button>
                 </td>
             </tr>
@@ -33,6 +35,11 @@ export function updateTables() {
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>${user.role}</td>
+                <td>
+                    <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
             </tr>
         `;
     });

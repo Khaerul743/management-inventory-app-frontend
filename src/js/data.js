@@ -1,7 +1,6 @@
-export let products = [
-    { id: 1, name: "Product A", stock: 100, price: 15 },
-    { id: 2, name: "Product B", stock: 200, price: 25 },
-];
+import { getData } from "../api/apiService.js";
+
+export let getProducts = getData('/product').then(res => res.data.payload.datas);
 
 export let users = [
     { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
@@ -15,5 +14,5 @@ export let orders = [
 
 // Fungsi buat update data di modul lain
 export function setProducts(newProducts) {
-    products = newProducts;
+    getProducts = newProducts;
 }

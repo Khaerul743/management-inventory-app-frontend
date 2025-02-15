@@ -1,49 +1,84 @@
-import { products, setProducts } from "./data.js";
+import { getProducts, setProducts } from "./data.js";
 import { updateTables } from "./ui.js";
+import { postData,deleteData,UpdateData, detailData } from "../api/apiService.js";
+import { refresh } from "./helper.js";
 
 export function addProduct() {
-    const productName = document.getElementById("productName").value;
-    const productStock = document.getElementById("productStock").value;
-    const productPrice = document.getElementById("productPrice").value;
+    const nama = document.getElementById("productName").value;
+    const kategori = document.getElementById("productCategory").value
+    const stok = document.getElementById("productStock").value;
+    const harga = document.getElementById("productPrice").value;
 
-    const newProduct = {
-        id: products.length + 1,
-        name: productName,
-        stock: parseInt(productStock),
-        price: parseFloat(productPrice),
-    };
-
-    setProducts([...products, newProduct]); // Update data
-    updateTables(); // Refresh tampilan
-
-    // document.getElementById("addProductModal").reset();
-    // $('#addProductModal').modal('hide');
+    if(nama && kategori && stok && harga){
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "Added product successfully",
+            timer: 2000,
+            showConfirmButton: false
+        });
+        postData("/product",{nama,kategori,stok,harga})
+        const modalElement = document.getElementById("addProductModal");
+        const modalInstance = bootstrap.Modal.getInstance(modalElement); 
+        modalInstance.hide();
+        refresh()
+    }
 }
 
-export function editProduct(id) {
-    const product = products.find(p => p.id === id);
-    document.getElementById("editProductId").value = product.id;
-    document.getElementById("editProductName").value = product.name;
-    document.getElementById("editProductStock").value = product.stock;
-    document.getElementById("editProductPrice").value = product.price;
+export async function editProduct(id) {
+    const getData = await detailData("/product/"+id)
+    const product = getData.payload.datas
+    document.getElementById("id-product").value = product.id
+    document.getElementById("editProductName").value = product.nama;
+    document.getElementById("editProductCategory").value = product.kategori;
+    document.getElementById("editProductStock").value = product.stok;
+    document.getElementById("editProductPrice").value = product.harga;
 }
 
 export function updateProduct() {
-    const productId = document.getElementById("editProductId").value;
-    const productName = document.getElementById("editProductName").value;
-    const productStock = document.getElementById("editProductStock").value;
-    const productPrice = document.getElementById("editProductPrice").value;
-
-    const updatedProducts = products.map(p =>
-        p.id == productId ? { ...p, name: productName, stock: parseInt(productStock), price: parseFloat(productPrice) } : p
-    );
-    console.log(updatedProducts)
-    setProducts(updatedProducts);
-    // updateTables();
-    // $('#editProductModal').modal('hide');
+    const productId = document.getElementById("id-product").value
+    const nama = document.getElementById("editProductName").value;
+    const kategori = document.getElementById("editProductCategory").value;
+    const stok = document.getElementById("editProductStock").value;
+    const harga = document.getElementById("editProductPrice").value;
+    UpdateData("/product/"+productId,{nama,kategori,stok,harga})
+    .then(res => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: res.data.payload.message,
+            timer: 2000,
+            showConfirmButton: false
+        });
+        refresh()
+    })
 }
 
-export function deleteProduct(id) {
-    setProducts(products.filter(p => p.id !== id));
-    updateTables();
+export function deleteProduct(el){
+    if(el.target.classList.contains("btn-del") || el.target.classList.contains("btn-delete")){
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+              const harga = el.target.parentElement.parentElement.previousElementSibling;
+              const productId = harga.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling
+              deleteData("/product/"+productId.innerText)
+                  .then(res => {
+                      location.reload()
+                      updateTables()
+                  })
+            }
+          });
+    }
 }
