@@ -212,31 +212,43 @@
     </div>
 
 
-        <!-- Edit Product Modal -->
-    <div class="modal fade" id="editUserModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <data id="id-product"></data>
-                    <form id="editProductForm">
-                        <input type="hidden" id="editProductId">
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
-                            <input type="text" class="form-control" id="editProductName" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-custom-primary" onclick="updateProduct()">Save Changes</button>
+        <!-- Edit User Modal -->
+        <div class="modal fade" id="editUserModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <data id="id-product"></data>
+                        <form id="editProductForm">
+                            <input type="hidden" id="editProductId">
+                            <div class="mb-3">
+                                <label class="form-label">Role</label>
+                                <div>
+                                    <input type="radio" name="editUserRole" id="roleAdmin" value="admin" required>
+                                    <label for="roleAdmin">Admin</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="editUserRole" id="roleEmployee" value="employee">
+                                    <label for="roleEmployee">Employee</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="editUserRole" id="roleCustomer" value="customer">
+                                    <label for="roleCustomer">Customer</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-custom-primary" id="change-role">Save Changes</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../src/js/main.js"></script>
 </body>

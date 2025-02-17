@@ -11,8 +11,7 @@ export const login = async (endPoint,data) => {
         })
         return response
     } catch (error) {
-        const response = error.response
-        return response
+        return errorMessage("Login gagal")
     }
 }
 
@@ -39,8 +38,7 @@ export const postData = async (endPoint,data) => {
         })
         return response
     } catch (error) {
-        const response = error.response
-        return response
+        return errorMessage("Something Wrong!")
     }
 }
 
@@ -67,7 +65,7 @@ export const UpdateData = async (endPoint,data) => {
         })
         return response
     } catch (error) {
-        return console.log(error)
+        return errorMessage("Gagal update data")
     }
 }
 

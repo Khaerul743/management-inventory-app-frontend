@@ -1,10 +1,10 @@
 import { updateTables } from "./ui.js";
 import { addProduct,deleteProduct,editProduct,updateProduct } from "./modules/product.js";
-import { registerHandler,loginHandler,getUserRole } from "./modules/user.js";
+import { registerHandler,loginHandler,getUserId } from "./modules/user.js";
 import { getProducts } from "./modules/data.js";
-import { getData } from "../api/apiService.js";
-const productTable = document.getElementById('productTableBody');
 
+const productTable = document.getElementById('productTableBody');
+const userTable = document.getElementById("userTableBody")
 if(productTable){
     window.editProduct = editProduct;
     window.deleteProduct = deleteProduct;
@@ -13,7 +13,12 @@ if(productTable){
     window.addProduct = addProduct;
     updateTables()
     productTable.addEventListener("click",deleteProduct)
+
+    const btnChangeRole = document.getElementById("change-role");
+    window.btnChangeRole = btnChangeRole
     window.getProducts = getProducts
+    window.userTable = userTable;
+    userTable.addEventListener("click",getUserId)
 }
 
 const btnRegister = document.getElementById("btn-register")

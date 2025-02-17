@@ -2,10 +2,7 @@ import { getData } from "../../api/apiService.js";
 
 export const getProducts = getData('/product').then(res => res.data.payload.datas)
 
-export let users = [
-    { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
-];
+export let getUsers = getData("/user").then(res => res.data.payload.datas)
 
 export let orders = [
     { orderId: 1, customer: "John Doe", product: "Product A", quantity: 2, status: "Pending" },

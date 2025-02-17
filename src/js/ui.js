@@ -1,4 +1,4 @@
-import {getProducts,users,orders } from "./modules/data.js";
+import {getProducts,getUsers,orders } from "./modules/data.js";
 
 export async function updateTables() {
     const productTableBody = document.getElementById("productTableBody");
@@ -28,6 +28,7 @@ export async function updateTables() {
     });
 
     userTableBody.innerHTML = "";
+    const users = await getUsers;
     users.forEach(user => {
         userTableBody.innerHTML += `
             <tr>
@@ -36,7 +37,8 @@ export async function updateTables() {
                 <td>${user.email}</td>
                 <td>${user.role}</td>
                 <td>
-                    <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                    <data value="${user.id}"></data>
+                    <button class="btn-action btn-edit btn-change-role" data-bs-toggle="modal" data-bs-target="#editUserModal" >
                         <i class="fas fa-edit"></i>
                     </button>
                 </td>

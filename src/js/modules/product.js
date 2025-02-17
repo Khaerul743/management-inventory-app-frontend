@@ -1,7 +1,7 @@
 import { getProducts, setProducts } from "./data.js";
 import { updateTables } from "../ui.js";
 import { postData,deleteData,UpdateData, detailData } from "../../api/apiService.js";
-import { refresh,successMessage } from "./helper.js";
+import { refresh,successMessage,confirmMessage,deleteMessage } from "./helper.js";
 
 export function addProduct() {
     const nama = document.getElementById("productName").value;
@@ -44,21 +44,10 @@ export function updateProduct() {
 
 export function deleteProduct(el){
     if(el.target.classList.contains("btn-del") || el.target.classList.contains("btn-delete")){
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        confirmMessage("You won't be able to revert this!")
+          .then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+              deleteMessage("Your file has been deleted.")
               let productId = undefined;
               if(el.target.tagName == "BUTTON"){
                     const harga = el.target.parentElement.previousElementSibling
