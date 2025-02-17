@@ -1,4 +1,5 @@
-import {getProducts,getUsers,orders } from "./modules/data.js";
+import {getProducts,getUsers,getOrders } from "./modules/data.js";
+import { formatOrders } from "./modules/order.js";
 
 export async function updateTables() {
     const productTableBody = document.getElementById("productTableBody");
@@ -47,13 +48,14 @@ export async function updateTables() {
     });
 
     orderTableBody.innerHTML = "";
+    const orders = await formatOrders()
     orders.forEach(order => {
         orderTableBody.innerHTML += `
             <tr>
-                <td>${order.orderId}</td>
+                <td>${order.id}</td>
                 <td>${order.customer}</td>
-                <td>${order.product}</td>
-                <td>${order.quantity}</td>
+                <td>${order.productName}</td>
+                <td>${order.amount}</td>
                 <td><span class="status-badge ${order.status === "Pending" ? "status-pending" : "status-completed"}">${order.status}</span></td>
             </tr>
         `;
