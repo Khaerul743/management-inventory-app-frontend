@@ -1,7 +1,7 @@
 import { getProducts, setProducts } from "./data.js";
-import { updateTables } from "./ui.js";
-import { postData,deleteData,UpdateData, detailData } from "../api/apiService.js";
-import { refresh } from "./helper.js";
+import { updateTables } from "../ui.js";
+import { postData,deleteData,UpdateData, detailData } from "../../api/apiService.js";
+import { refresh,successMessage } from "./helper.js";
 
 export function addProduct() {
     const nama = document.getElementById("productName").value;
@@ -10,13 +10,7 @@ export function addProduct() {
     const harga = document.getElementById("productPrice").value;
 
     if(nama && kategori && stok && harga){
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Added product successfully",
-            timer: 2000,
-            showConfirmButton: false
-        });
+        successMessage("Added product is successfully")
         postData("/product",{nama,kategori,stok,harga})
         const modalElement = document.getElementById("addProductModal");
         const modalInstance = bootstrap.Modal.getInstance(modalElement); 
@@ -43,13 +37,7 @@ export function updateProduct() {
     const harga = document.getElementById("editProductPrice").value;
     UpdateData("/product/"+productId,{nama,kategori,stok,harga})
     .then(res => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: res.data.payload.message,
-            timer: 2000,
-            showConfirmButton: false
-        });
+        successMessage(res.data.payload.message)
         refresh()
     })
 }
@@ -71,12 +59,18 @@ export function deleteProduct(el){
                 text: "Your file has been deleted.",
                 icon: "success"
               });
-              const harga = el.target.parentElement.parentElement.previousElementSibling;
-              const productId = harga.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling
+              let productId = undefined;
+              if(el.target.tagName == "BUTTON"){
+                    const harga = el.target.parentElement.previousElementSibling
+                    productId = harga.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling
+              }else{
+                    const harga = el.target.parentElement.parentElement.previousElementSibling;
+                    productId = harga.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling
+              }
               deleteData("/product/"+productId.innerText)
                   .then(res => {
-                      location.reload()
-                      updateTables()
+                    location.reload()
+                    updateTables()
                   })
             }
           });

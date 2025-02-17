@@ -1,11 +1,31 @@
 import { api } from "./apiConfig.js";
+import { errorMessage } from "../js/modules/helper.js";
 
-export const getData = async (endPoint,params = {}) => {
+export const login = async (endPoint,data) => {
     try {
-        const response = await api.get(endPoint,{params})
+        const response = await api({
+            url:endPoint,
+            method:"POST",
+            data:data,
+            withCredentials:true,
+        })
+        return response
+    } catch (error) {
+        const response = error.response
+        return response
+    }
+}
+
+export const getData = async (endPoint) => {
+    try {
+        const response = await api({
+            url:endPoint,
+            method:"GET",
+            withCredentials:true
+        })
         return response
     } catch (error) {  
-        return console.log("error saat ambil data");
+        return error.response
     }
 }
 
@@ -14,11 +34,13 @@ export const postData = async (endPoint,data) => {
         const response = await api({
             url:endPoint,
             method:"POST",
-            data:data
+            data:data,
+            withCredentials:true
         })
         return response
     } catch (error) {
-        return console.log(error)
+        const response = error.response
+        return response
     }
 }
 
@@ -27,10 +49,11 @@ export const deleteData = async (endPoint) => {
         const response = await api({
             url:endPoint,
             method:"DELETE",
+            withCredentials:true
         })
         return response;
     } catch (error) {
-        return console.log(error)
+        return errorMessage("Gagal menghapus data")
     }
 }
 
@@ -39,7 +62,8 @@ export const UpdateData = async (endPoint,data) => {
         const response = await api({
             url:endPoint,
             method:"PUT",
-            data:data
+            data:data,
+            withCredentials:true
         })
         return response
     } catch (error) {
@@ -52,6 +76,7 @@ export const detailData = async (endPoint) => {
         const response = await api({
             url:endPoint,
             method:"GET",
+            withCredentials:true
         })
         return response.data
     } catch (error) {

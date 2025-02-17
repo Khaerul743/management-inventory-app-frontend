@@ -1,4 +1,4 @@
-import {getProducts,users,orders } from "./data.js";
+import {getProducts,users,orders } from "./modules/data.js";
 
 export async function updateTables() {
     const productTableBody = document.getElementById("productTableBody");

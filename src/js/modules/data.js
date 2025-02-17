@@ -1,6 +1,6 @@
-import { getData } from "../api/apiService.js";
+import { getData } from "../../api/apiService.js";
 
-export let getProducts = getData('/product').then(res => res.data.payload.datas);
+export const getProducts = getData('/product').then(res => res.data.payload.datas)
 
 export let users = [
     { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
