@@ -53,7 +53,7 @@ export async function updateTables() {
         orderTableBody.innerHTML += `
             <tr>
                 <td>${order.id}</td>
-                <td>${order.customer}</td>
+                <td>${order.userEmail}</td>
                 <td>${order.productName}</td>
                 <td>${order.amount}</td>
                 <td><span class="status-badge ${order.status === "Pending" ? "status-pending" : "status-completed"}">${order.status}</span></td>
