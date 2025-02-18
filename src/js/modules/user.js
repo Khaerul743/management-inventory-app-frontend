@@ -1,5 +1,5 @@
-import { postData,getData,UpdateData } from "../../api/apiService.js";
-import { errorMessage,refresh,successMessage } from "./helper.js";
+import { postData,getData,UpdateData,deleteData } from "../../api/apiService.js";
+import { deleteMessage, errorMessage,refresh,successMessage,confirmMessage } from "./helper.js";
 
 export const registerHandler = async (el) => {
     el.preventDefault()
@@ -50,4 +50,27 @@ export const getUserId = async (el) => {
 export const getUserRole = async () => {
     const getUserProfile = await getData("/user/profile")
     return getUserProfile.data.payload.datas.role
+}
+
+export const deleteUser = (el) => {
+    if(el.target.classList.contains("btn-delete") || el.target.classList.contains("btn-del")){
+        confirmMessage("You won't be able to revert this!")
+        .then(async result => {
+            if(result.isConfirmed){
+                let userId = undefined;
+                if(el.target.tagName == "BUTTON"){
+                    userId = el.target.previousElementSibling.previousElementSibling.value
+                }else{
+                    userId = el.target.parentElement.previousElementSibling.previousElementSibling.value
+                }
+                const deletedUser = await deleteData("/user/"+userId)
+                const status = deletedUser.data.payload.status
+                if(status == 200){
+                    deleteMessage("User has been Deleted");
+                    return refresh()
+                }
+                return errorMessage("Something Wrong!")
+            }
+        })
+    }
 }

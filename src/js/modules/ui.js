@@ -1,5 +1,5 @@
-import {getProducts,getUsers,getOrders } from "./modules/data.js";
-import { formatOrders } from "./modules/order.js";
+import {getProducts,getUsers,getOrders } from "./data.js";
+import { formatOrders } from "./order.js";
 
 export async function updateTables() {
     const productTableBody = document.getElementById("productTableBody");
@@ -42,6 +42,9 @@ export async function updateTables() {
                     <button class="btn-action btn-edit btn-change-role" data-bs-toggle="modal" data-bs-target="#editUserModal" >
                         <i class="fas fa-edit"></i>
                     </button>
+                    <button class="btn-action btn-delete">
+                        <i class="fas btn-del fa-trash-alt" id="button-delete"></i>
+                    </button>
                 </td>
             </tr>
         `;
@@ -56,7 +59,24 @@ export async function updateTables() {
                 <td>${order.userEmail}</td>
                 <td>${order.productName}</td>
                 <td>${order.amount}</td>
-                <td><span class="status-badge ${order.status === "Pending" ? "status-pending" : "status-completed"}">${order.status}</span></td>
+                <td>
+                    <span class="status-badge 
+                        ${order.status === "pending" ? "status-pending" : 
+                        order.status === "process" ? "status-process" : 
+                        "status-completed"}">
+                        ${order.status}
+                    </span>
+                </td>
+
+                <td>
+                    <data value="${order.id}"></data>
+                    <button class="btn-action btn-edit btn-change-order" data-bs-toggle="modal" data-bs-target="#editOrderModal" >
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-action btn-delete">
+                        <i class="fas btn-del fa-trash-alt" id="button-delete"></i>
+                    </button>
+                </td>
             </tr>
         `;
     });

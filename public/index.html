@@ -123,6 +123,7 @@
                                             <th>Product</th>
                                             <th>Quantity</th>
                                             <th>Status</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="orderTableBody">
@@ -248,8 +249,45 @@
                 </div>
             </div>
         </div>
+
+        <!-- edit order modal -->
+        <div class="modal fade" id="editOrderModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <data id="id-product"></data>
+                        <form id="editProductForm">
+                            <input type="hidden" id="editProductId">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <div>
+                                    <input type="radio" name="editOrderStatus" id="statusPending" value="pending" required>
+                                    <label for="statusPending">Pending</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="editOrderStatus" id="statusProcess" value="process">
+                                    <label for="statusProcess">Process</label>
+                                </div>
+                                <div>
+                                    <input type="radio" name="editOrderStatus" id="statusDone" value="done">
+                                    <label for="statusDone">Done</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-custom-primary" id="change-status">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="../src/js/main.js"></script>
+    <script type="module" src="../src/js/pages/main.js"></script>
 </body>
 </html>

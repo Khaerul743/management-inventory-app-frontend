@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Shop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #2c3e50;
+            --secondary-bg: #34495e;
+            --accent-color: #3498db;
+            --text-light: #ecf0f1;
+            --hover-color: #2980b9;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Navbar Styling */
+        .custom-navbar {
+            background: linear-gradient(135deg, var(--primary-bg), var(--secondary-bg));
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            color: var(--text-light) !important;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            margin: 0 10px;
+            padding: 8px 15px !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-link.active {
+            background-color: var(--accent-color);
+        }
+
+        /* Product Card Styling */
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image i {
+            font-size: 4rem;
+            color: var(--secondary-bg);
+        }
+
+        .product-details {
+            padding: 20px;
+        }
+
+        .product-price {
+            color: var(--accent-color);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Cart Styling */
+        .cart-badge {
+            position: relative;
+            top: -8px;
+            right: 5px;
+            background-color: #e74c3c;
+            padding: 4px 8px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .cart-overlay.active {
+            display: block;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Order History Styling */
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        /* Button Styling */
+        .btn-custom {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: var(--hover-color);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        }
+
+        .search-input {
+            border-radius: 8px;
+            padding: 12px 20px;
+            border: 2px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .product-card {
+                margin: 10px;
+            }
+
+            .custom-navbar {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">SHOP<span class="text-warning">HUB</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showProducts()">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showOrders()">My Orders</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a class="nav-link" href="#" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cartCount">0</span>
+                    </a>
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" class="form-control search-input" placeholder="Search products...">
+                </div>
+                <div class="col-md-4">
+                    <select class="form-control search-input">
+                        <option>All Categories</option>
+                        <option>Electronics</option>
+                        <option>Clothing</option>
+                        <option>Books</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div id="productsSection">
+            <div class="row" id="productsList">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="ordersSection" style="display: none;">
+            <h2 class="mb-4">My Orders</h2>
+            <div id="ordersList">
+                <!-- Orders will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0">Shopping Cart</h4>
+            <button class="btn-close" onclick="toggleCart()"></button>
+        </div>
+        <div id="cartItems">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="mt-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h5>Total:</h5>
+                <h5 id="cartTotal">Rp 0</h5>
+            </div>
+            <button class="btn btn-custom w-100">Checkout</button>
+        </div>
+    </div>
+
+    <div class="cart-overlay" onclick="toggleCart()"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data
+        const products = [
+            { id: 1, name: 'Laptop Gaming Pro', price: 15000000, category: 'Electronics' },
+            { id: 2, name: 'Wireless Mouse', price: 200000, category: 'Electronics' },
+            { id: 3, name: 'Mechanical Keyboard', price: 1200000, category: 'Electronics' },
+            { id: 4, name: 'Gaming Headset', price: 800000, category: 'Electronics' },
+        ];
+
+        const orders = [
+            { id: 1, date: '2024-02-18', items: ['Laptop Gaming Pro'], total: 15000000, status: 'completed' },
+            { id: 2, date: '2024-02-17', items: ['Wireless Mouse', 'Gaming Headset'], total: 1000000, status: 'pending' },
+        ];
+
+        let cart = [];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            updateCartCount();
+        });
+
+        // Toggle cart sidebar
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+            document.querySelector('.cart-overlay').classList.toggle('active');
+        }
+
+        // Load products
+        function loadProducts() {
+            const productsList = document.getElementById('productsList');
+            productsList.innerHTML = products.map(product => `
+                <div class="col-md-3 col-sm-6">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <div class="product-details">
+                            <h5>${product.name}</h5>
+                            <p class="product-price">Rp ${product.price.toLocaleString()}</p>
+                            <button class="btn btn-custom w-100" onclick="addToCart(${product.id})">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load orders
+        function loadOrders() {
+            const ordersList = document.getElementById('ordersList');
+            ordersList.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">Order #${order.id}</h6>
+                        <span class="order-status status-${order.status}">${order.status}</span>
+                    </div>
+                    <p class="mb-2">Date: ${order.date}</p>
+                    <p class="mb-2">Items: ${order.items.join(', ')}</p>
+                    <p class="mb-0">Total: Rp ${order.total.toLocaleString()}</p>
+                </div>
+            `).join('');
+        }
+
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCartCount();
+            updateCartItems();
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        // Update cart items
+        function updateCartItems() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0">${item.name}</h6>
+                        <p class="mb-0">Rp ${item.price.toLocaleString()}</p>
+                    </div>
+                    <button class="btn btn-sm btn-danger ms-3" onclick="removeFromCart(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cartTotal').textContent = `Rp ${total.toLocaleString()}`;
+        }
+
+        // Remove from cart
+        function removeFromCart(productId) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index > -1) {
+                cart.splice(index, 1);
+                updateCartCount();
+                updateCartItems();
+            }
+        }
+
+        // Show products section
+        function showProducts() {
+            document.getElementById('productsSection').style.display = 'block';
+            document.getElementById('ordersSection').style.display = 'none';
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelector('[onclick="showProducts()"]').classList.add('active');
+        }
+
+        // Show orders section
+        function showOrders() {
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('ordersSection').style.display = 'block';
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelector('[onclick="showOrders()"]').classList.add('active');
+            loadOrders();
+        }
+    </script>
+</body>
+</html>

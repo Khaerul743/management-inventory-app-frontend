@@ -1,5 +1,5 @@
 import { getProducts, setProducts } from "./data.js";
-import { updateTables } from "../ui.js";
+import { updateTables } from "./ui.js";
 import { postData,deleteData,UpdateData, detailData } from "../../api/apiService.js";
 import { refresh,successMessage,confirmMessage,deleteMessage } from "./helper.js";
 

@@ -1,11 +1,13 @@
-import { updateTables } from "./ui.js";
-import { addProduct,deleteProduct,editProduct,updateProduct } from "./modules/product.js";
-import { registerHandler,loginHandler,getUserId } from "./modules/user.js";
-import { getProducts } from "./modules/data.js";
+import { updateTables } from "../modules/ui.js";
+import { addProduct,deleteProduct,editProduct,updateProduct } from "../modules/product.js";
+import { registerHandler,loginHandler,getUserId,deleteUser } from "../modules/user.js";
+import { updateStatus,deleteOrder } from "../modules/order.js";
 
 const productTable = document.getElementById('productTableBody');
 const userTable = document.getElementById("userTableBody")
+const orderTable = document.getElementById("orderTableBody")
 if(productTable){
+    //Product
     window.editProduct = editProduct;
     window.deleteProduct = deleteProduct;
     window.updateProduct = updateProduct;
@@ -14,11 +16,16 @@ if(productTable){
     updateTables()
     productTable.addEventListener("click",deleteProduct)
 
+    //User
     const btnChangeRole = document.getElementById("change-role");
     window.btnChangeRole = btnChangeRole
-    window.getProducts = getProducts
     window.userTable = userTable;
     userTable.addEventListener("click",getUserId)
+    userTable.addEventListener("click",deleteUser)
+
+    //Order
+    orderTable.addEventListener("click",updateStatus)
+    orderTable.addEventListener("click",deleteOrder)
 }
 
 const btnRegister = document.getElementById("btn-register")

@@ -102,6 +102,10 @@
 
         .status-pending {
             background-color: #fff3cd;
+            color: #ff4c4c;
+        }
+        .status-process {
+            background-color: #fff3cd;
             color: #856404;
         }
 
